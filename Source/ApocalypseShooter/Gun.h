@@ -11,6 +11,7 @@ class APOCALYPSESHOOTER_API AGun : public AActor
 	
 public:	
 	AGun();
+	void PullTrigger();
 
 protected:
 	virtual void BeginPlay() override;
@@ -24,4 +25,13 @@ private:
 
 	UPROPERTY(VisibleAnywhere)
 	USkeletalMeshComponent* Mesh;
+
+	UPROPERTY(EditAnywhere)
+	UParticleSystem* ShotgunFlash;
+
+	UPROPERTY(EditAnywhere)
+	UParticleSystem* ShotgunHit;
+
+	UPROPERTY(EditAnywhere)
+	float MaxRange = 1000;
 };
