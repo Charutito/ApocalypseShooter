@@ -15,6 +15,9 @@ protected:
 	virtual void BeginPlay() override;
 
 public:	
+	UFUNCTION(BlueprintPure)
+	bool IsDead() const;
+
 	virtual void Tick(float DeltaTime) override;
 	AShooterCharacter();
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
