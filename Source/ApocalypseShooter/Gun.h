@@ -33,6 +33,9 @@ private:
 	UParticleSystem* ShotgunHit;
 
 	UPROPERTY(EditAnywhere)
+	UParticleSystem* BloodHit;
+
+	UPROPERTY(EditAnywhere)
 	float MaxRange = 1000;
 
 	UPROPERTY(EditAnywhere)
