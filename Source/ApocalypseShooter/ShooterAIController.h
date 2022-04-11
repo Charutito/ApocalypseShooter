@@ -23,5 +23,11 @@ private:
 	APawn* PlayerPawn;
 
 	UPROPERTY(EditAnywhere)
-	float AcceptanceRadius = 200;
+	class UBehaviorTree* AIBehaviour;
+
+	UPROPERTY(EditAnywhere)
+	FVector FirstLocation = FVector(900, -1411, 88);
+
+	UPROPERTY(EditAnywhere)
+	FVector SecondLocation = FVector(-250, -1411, 88);
 };
