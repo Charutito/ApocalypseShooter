@@ -1,13 +1,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "BaseCharacter.h"
 #include "GameFramework/Character.h"
 #include "ShooterCharacter.generated.h"
 
 class AGun;
 
 UCLASS()
-class APOCALYPSESHOOTER_API AShooterCharacter : public ACharacter
+class APOCALYPSESHOOTER_API AShooterCharacter : public ABaseCharacter
 {
 	GENERATED_BODY()
 
@@ -15,13 +16,9 @@ protected:
 	virtual void BeginPlay() override;
 
 public:	
-	UFUNCTION(BlueprintPure)
-	bool IsDead() const;
-
-	virtual void Tick(float DeltaTime) override;
 	AShooterCharacter();
+	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 
 private:
 	void MoveForward(float AxisValue);
@@ -38,9 +35,4 @@ private:
 
 	UPROPERTY()
 	AGun* Gun;
-
-	UPROPERTY(EditDefaultsOnly)
-	float MaxHealth = 100;
-	UPROPERTY(VisibleAnywhere)
-	float CurrentHealth = 10;
 };
