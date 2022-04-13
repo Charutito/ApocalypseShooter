@@ -46,7 +46,10 @@ void AGun::PullTrigger()
 	
 	FHitResult Hit;
 
-	if (GetWorld()->LineTraceSingleByChannel(Hit, Location, End, ECollisionChannel::ECC_GameTraceChannel1))
+	FCollisionQueryParams Params;
+	Params.AddIgnoredActor(this);
+	Params.AddIgnoredActor(GetOwner());
+	if (GetWorld()->LineTraceSingleByChannel(Hit, Location, End, ECollisionChannel::ECC_GameTraceChannel1, Params))
 	{
 		FVector ShotDirection = -Rotation.Vector();
 		
@@ -60,7 +63,7 @@ void AGun::PullTrigger()
 
 			if (Pawn != NULL)
 			{
-				if ((Pawn->Controller != NULL) && (Cast<AShooterCharacter>(Pawn->Controller) == NULL))
+				if ((Pawn->Controller != NULL))
 				{
 					UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), BloodHit, Hit.Location, ShotDirection.Rotation());
 				}

@@ -31,3 +31,8 @@ bool AZombieCharacter::IsDead() const
 {
 	return CurrentHealth <= 0;
 }
+
+void AZombieCharacter::Attack()
+{
+	UE_LOG(LogTemp, Warning, TEXT("ATTACK WACHO"));
+}

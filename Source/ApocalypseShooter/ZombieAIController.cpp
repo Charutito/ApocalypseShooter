@@ -9,26 +9,11 @@ void AZombieAIController::BeginPlay()
     if (AIBehaviour != nullptr)
     {
         RunBehaviorTree(AIBehaviour);
-        GetBlackboardComponent()->SetValueAsVector(TEXT("FirstLocation"), GetOwner()->GetActorLocation());
+        GetBlackboardComponent()->SetValueAsVector(TEXT("FirstLocation"), GetPawn()->GetActorLocation());
     }
 }
 
 void AZombieAIController::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
-
-    MoveToPlayerIfInSight();
-}
-
-void AZombieAIController::MoveToPlayerIfInSight()
-{
-    if (LineOfSightTo(PlayerPawn))
-    {
-        GetBlackboardComponent()->SetValueAsVector(TEXT("PlayerLocation"), PlayerPawn->GetActorLocation());
-        GetBlackboardComponent()->SetValueAsVector(TEXT("LastKnownPlayerLocation"), PlayerPawn->GetActorLocation());
-    }
-    else
-    {
-        GetBlackboardComponent()->ClearValue(TEXT("PlayerLocation"));
-    }
 }

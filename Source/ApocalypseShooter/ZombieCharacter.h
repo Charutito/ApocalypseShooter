@@ -16,6 +16,7 @@ public:
 	//virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	UFUNCTION(BlueprintPure)
 	bool IsDead() const;
+	void Attack();
 
 protected:
 	virtual void BeginPlay() override;
