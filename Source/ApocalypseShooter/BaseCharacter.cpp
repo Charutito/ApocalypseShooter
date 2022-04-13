@@ -1,4 +1,5 @@
 #include "BaseCharacter.h"
+#include "Components/CapsuleComponent.h"
 
 ABaseCharacter::ABaseCharacter()
 {
@@ -27,6 +28,13 @@ float ABaseCharacter::TakeDamage(float DamageAmount, struct FDamageEvent const& 
 	DamageApplied = FMath::Min(CurrentHealth, DamageApplied);
 	CurrentHealth -= DamageApplied;
 	UE_LOG(LogTemp, Warning, TEXT("Health left %f"), CurrentHealth);
+
+	if (IsDead())
+	{
+		DetachFromControllerPendingDestroy();
+		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	}
+
 	return DamageApplied;
 }
 
