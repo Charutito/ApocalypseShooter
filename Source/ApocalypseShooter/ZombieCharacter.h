@@ -15,7 +15,14 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	void Attack();
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	bool IsAttacking;
+
 protected:
 	virtual void BeginPlay() override;
+
+private:
+	UPROPERTY(EditAnywhere)
+	float AttackRange = 140;
 
 };

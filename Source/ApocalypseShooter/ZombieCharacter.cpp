@@ -1,4 +1,5 @@
 #include "ZombieCharacter.h"
+#include "Kismet/GameplayStatics.h"
 
 AZombieCharacter::AZombieCharacter()
 {
@@ -17,5 +18,13 @@ void AZombieCharacter::Tick(float DeltaTime)
 
 void AZombieCharacter::Attack()
 {
-	UE_LOG(LogTemp, Warning, TEXT("ATTACK WACHO"));
+	IsAttacking = true;
+	APawn* PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
+	float DistanceToPlayer = FVector::Distance(GetActorLocation(), PlayerPawn->GetActorLocation());
+
+	if (DistanceToPlayer <= AttackRange)
+	{
+		FDamageEvent DamageEvent;
+		PlayerPawn->TakeDamage(10, DamageEvent, GetController(), this);
+	}
 }

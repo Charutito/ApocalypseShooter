@@ -1,14 +1,14 @@
-#include "BTTask_Attack.h"
+#include "BTTask_FinishAttack.h"
 #include "ZombieCharacter.h"
 #include "ZombieAIController.h"
 #include "BehaviorTree/BlackboardComponent.h"
 
-UBTTask_Attack::UBTTask_Attack()
+UBTTask_FinishAttack::UBTTask_FinishAttack()
 {
-    NodeName = TEXT("Attack");
+    NodeName = TEXT("Finish Attack");
 }
 
-EBTNodeResult::Type UBTTask_Attack::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
+EBTNodeResult::Type UBTTask_FinishAttack::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
     Super::ExecuteTask(OwnerComp, NodeMemory);
 
@@ -20,8 +20,8 @@ EBTNodeResult::Type UBTTask_Attack::ExecuteTask(UBehaviorTreeComponent& OwnerCom
 
     AZombieCharacter* Zombie = Cast<AZombieCharacter>(ZombieController->GetPawn());
 
-    OwnerComp.GetBlackboardComponent()->SetValueAsBool(TEXT("CanAttack"), true);
-    Zombie->Attack();
+    OwnerComp.GetBlackboardComponent()->SetValueAsBool(TEXT("CanAttack"), false);
+    Zombie->IsAttacking = false;;
 
     return EBTNodeResult::Succeeded;
 }
