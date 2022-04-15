@@ -39,6 +39,11 @@ void AShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 
 }
 
+float AShooterCharacter::GetHealthPercent() const
+{
+	return CurrentHealth / MaxHealth;
+}
+
 void AShooterCharacter::MoveForward(float AxisValue)
 {
 	AddMovementInput(GetActorForwardVector() * AxisValue);

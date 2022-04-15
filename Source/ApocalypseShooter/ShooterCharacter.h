@@ -19,6 +19,9 @@ public:
 	AShooterCharacter();
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	
+	UFUNCTION(BlueprintPure)
+	float GetHealthPercent() const;
 
 private:
 	void MoveForward(float AxisValue);
