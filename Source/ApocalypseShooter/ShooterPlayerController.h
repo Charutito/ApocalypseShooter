@@ -14,10 +14,17 @@ class APOCALYPSESHOOTER_API AShooterPlayerController : public APlayerController
 	
 public:
 	virtual void GameHasEnded(class AActor* EndGameFocus = nullptr, bool bIsWinner = false) override;
+	void RestartCountDown();
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	float RestartDelay = 5;
+
+	UPROPERTY(BlueprintReadOnly)
+	float CurrentDelay;
 
 private:
 	UPROPERTY(EditAnywhere)
-	float RestartDelay = 5;
+	TSubclassOf<class UUserWidget> LoseScreenClass;
 
 	FTimerHandle RestartTimer;
 };
