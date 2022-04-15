@@ -14,7 +14,7 @@ class APOCALYPSESHOOTER_API AZombieAIController : public AAIController
 
 public:
 	virtual void Tick(float DeltaTime);
-	void MoveToPlayerIfInSight();
+	bool IsDead() const;
 
 protected:
 	virtual void BeginPlay() override;

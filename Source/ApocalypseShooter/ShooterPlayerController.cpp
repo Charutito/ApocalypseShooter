@@ -7,10 +7,13 @@ void AShooterPlayerController::GameHasEnded(class AActor* EndGameFocus, bool bIs
     Super::GameHasEnded(EndGameFocus, bIsWinner);
     CurrentDelay = RestartDelay;
 
-    UUserWidget* LoseScreen = CreateWidget(this, LoseScreenClass);
-    if (LoseScreen != nullptr)
+    if (bIsWinner)
     {
-        LoseScreen->AddToViewport();
+        CreateScreenWidget(WinScreenClass);
+    }
+    else
+    {
+        CreateScreenWidget(LoseScreenClass);
     }
 
     FTimerHandle DelayCountDownTimer;
@@ -23,5 +26,14 @@ void AShooterPlayerController::RestartCountDown()
     if (CurrentDelay != 0)
     {
         CurrentDelay = CurrentDelay - 1;
+    }
+}
+
+void AShooterPlayerController::CreateScreenWidget(TSubclassOf<class UUserWidget> ScreenClass)
+{
+    UUserWidget* WidgetScreen = CreateWidget(this, ScreenClass);
+    if (WidgetScreen != nullptr)
+    {
+        WidgetScreen->AddToViewport();
     }
 }
