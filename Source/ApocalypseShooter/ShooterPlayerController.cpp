@@ -2,9 +2,16 @@
 #include "TimerManager.h"
 #include "Blueprint/UserWidget.h"
 
+void AShooterPlayerController::BeginPlay()
+{
+    Super::BeginPlay();
+    HUD = CreateScreenWidget(HUDScreenClass);
+}
+
 void AShooterPlayerController::GameHasEnded(class AActor* EndGameFocus, bool bIsWinner)
 {
     Super::GameHasEnded(EndGameFocus, bIsWinner);
+    HUD->RemoveFromViewport();
     CurrentDelay = RestartDelay;
 
     if (bIsWinner)
@@ -29,11 +36,13 @@ void AShooterPlayerController::RestartCountDown()
     }
 }
 
-void AShooterPlayerController::CreateScreenWidget(TSubclassOf<class UUserWidget> ScreenClass)
+UUserWidget* AShooterPlayerController::CreateScreenWidget(TSubclassOf<class UUserWidget> ScreenClass)
 {
     UUserWidget* WidgetScreen = CreateWidget(this, ScreenClass);
     if (WidgetScreen != nullptr)
     {
         WidgetScreen->AddToViewport();
+        return WidgetScreen;
     }
+    return nullptr;
 }

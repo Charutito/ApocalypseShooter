@@ -12,15 +12,18 @@ class APOCALYPSESHOOTER_API AShooterPlayerController : public APlayerController
 {
 	GENERATED_BODY()
 	
+protected:
+	virtual void BeginPlay() override;
+
 public:
 	virtual void GameHasEnded(class AActor* EndGameFocus = nullptr, bool bIsWinner = false) override;
 	void RestartCountDown();
-	void CreateScreenWidget(TSubclassOf<class UUserWidget> ScreenClass);
+	UUserWidget* CreateScreenWidget(TSubclassOf<class UUserWidget> ScreenClass);
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	float RestartDelay = 5;
 
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	float CurrentDelay;
 
 private:
@@ -29,6 +32,12 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class UUserWidget> WinScreenClass;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class UUserWidget> HUDScreenClass;
+
+	UPROPERTY(EditAnywhere)
+	UUserWidget* HUD;
 
 	FTimerHandle RestartTimer;
 };
