@@ -26,4 +26,7 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	float CurrentHealth = 10;
 
+private:
+	void NotifyDeadToGameMode();
+
 };

@@ -25,4 +25,6 @@ private:
 	UPROPERTY(EditAnywhere)
 	float AttackRange = 140;
 
+	UPROPERTY(EditAnywhere)
+	float Damage = 10;
 };

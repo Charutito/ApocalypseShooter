@@ -14,4 +14,6 @@ class APOCALYPSESHOOTER_API AApocalypseShooterGameModeBase : public AGameModeBas
 {
 	GENERATED_BODY()
 	
+public:
+	virtual void PawnKilled(APawn* PawnKilled);
 };

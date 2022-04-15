@@ -1,5 +1,6 @@
 #include "BaseCharacter.h"
 #include "Components/CapsuleComponent.h"
+#include "ApocalypseShooterGameModeBase.h"
 
 ABaseCharacter::ABaseCharacter()
 {
@@ -31,8 +32,9 @@ float ABaseCharacter::TakeDamage(float DamageAmount, struct FDamageEvent const& 
 
 	if (IsDead())
 	{
+		NotifyDeadToGameMode();
 		DetachFromControllerPendingDestroy();
-		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);		
 	}
 
 	return DamageApplied;
@@ -41,4 +43,13 @@ float ABaseCharacter::TakeDamage(float DamageAmount, struct FDamageEvent const& 
 bool ABaseCharacter::IsDead() const
 {
 	return CurrentHealth <= 0;
+}
+
+void ABaseCharacter::NotifyDeadToGameMode()
+{
+	AApocalypseShooterGameModeBase* GameMode = GetWorld()->GetAuthGameMode<AApocalypseShooterGameModeBase>();
+	if (GameMode != nullptr)
+	{
+		GameMode->PawnKilled(this);
+	}
 }

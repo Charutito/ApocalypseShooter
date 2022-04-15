@@ -25,6 +25,6 @@ void AZombieCharacter::Attack()
 	if (DistanceToPlayer <= AttackRange)
 	{
 		FDamageEvent DamageEvent;
-		PlayerPawn->TakeDamage(10, DamageEvent, GetController(), this);
+		PlayerPawn->TakeDamage(Damage, DamageEvent, GetController(), this);
 	}
 }
