@@ -23,12 +23,32 @@ public:
 	UFUNCTION(BlueprintPure)
 	float GetHealthPercent() const;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
+	class USpringArmComponent* CameraBoom;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
+	class UCameraComponent* FollowCamera;
+
 private:
 	void MoveForward(float AxisValue);
 	void MoveRight(float AxisValue);
 	void LookUpRate(float AxisValue);
 	void LookRightRate(float AxisValue);
 	void PerformShoot();
+	void PressAim();
+	void ReleaseAim();
+	void CheckCameraZoom(float DeltaTime);
+
+	UPROPERTY(EditDefaultsOnly, Category = "Camera")
+	float DefaultFOV = 300;
+	
+	UPROPERTY(EditDefaultsOnly, Category = "Camera")
+	float ZoomedFOV = 80;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Camera", meta = (ClampMin = 0.1, ClampMax = 100))
+	float ZoomInterpSpeed;
+	
+	bool isZooming;
 
 	UPROPERTY(EditDefaultsOnly)
 	float RotationRate = 10;
