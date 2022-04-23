@@ -29,6 +29,15 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
 	class UCameraComponent* FollowCamera;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Character Movement", Meta = (BlueprintProtected = "true"))
+	float SpeedSprintFactor = 1;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Character Movement", Meta = (BlueprintProtected = "true"))
+	float SpeedAimFactor = 0.75;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Character Movement", Meta = (BlueprintProtected = "true"))
+	float BaseSpeed;
+
 private:
 	void MoveForward(float AxisValue);
 	void MoveRight(float AxisValue);
@@ -38,6 +47,8 @@ private:
 	void PressAim();
 	void ReleaseAim();
 	void CheckCameraZoom(float DeltaTime);
+	void PressSprint();
+	void ReleaseSprint();
 
 	UPROPERTY(EditDefaultsOnly, Category = "Camera")
 	float DefaultFOV = 300;
@@ -49,6 +60,7 @@ private:
 	float ZoomInterpSpeed;
 	
 	bool isZooming;
+	bool isSprinting;
 
 	UPROPERTY(EditDefaultsOnly)
 	float RotationRate = 10;

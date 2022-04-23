@@ -2,6 +2,7 @@
 #include "Gun.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 AShooterCharacter::AShooterCharacter()
 {
@@ -23,6 +24,8 @@ void AShooterCharacter::BeginPlay()
 	Gun = GetWorld()->SpawnActor<AGun>(GunClass);
 	Gun->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("WeaponSocket"));
 	Gun->SetOwner(this);
+
+	GetCharacterMovement()->MaxWalkSpeed = BaseSpeed;
 }
 
 void AShooterCharacter::Tick(float DeltaTime)
@@ -49,6 +52,8 @@ void AShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	PlayerInputComponent->BindAction(TEXT("Shoot"), EInputEvent::IE_Pressed, this, &AShooterCharacter::PerformShoot);
 	PlayerInputComponent->BindAction(TEXT("Aim"), EInputEvent::IE_Pressed, this, &AShooterCharacter::PressAim);
 	PlayerInputComponent->BindAction(TEXT("Aim"), EInputEvent::IE_Released, this, &AShooterCharacter::ReleaseAim);
+	PlayerInputComponent->BindAction(TEXT("Sprint"), EInputEvent::IE_Pressed, this, &AShooterCharacter::PressSprint);
+	PlayerInputComponent->BindAction(TEXT("Sprint"), EInputEvent::IE_Released, this, &AShooterCharacter::ReleaseSprint);
 }
 
 float AShooterCharacter::GetHealthPercent() const
@@ -58,12 +63,12 @@ float AShooterCharacter::GetHealthPercent() const
 
 void AShooterCharacter::MoveForward(float AxisValue)
 {
-	AddMovementInput(GetActorForwardVector() * AxisValue);
+	AddMovementInput(GetActorForwardVector(), AxisValue);
 }
 
 void AShooterCharacter::MoveRight(float AxisValue)
 {
-	AddMovementInput(GetActorRightVector() * AxisValue);
+	AddMovementInput(GetActorRightVector(), AxisValue);
 }
 
 void AShooterCharacter::LookUpRate(float AxisValue)
@@ -78,17 +83,23 @@ void AShooterCharacter::LookRightRate(float AxisValue)
 
 void AShooterCharacter::PerformShoot()
 {
-	Gun->PullTrigger();
+	if (!isSprinting)
+	{
+		Gun->PullTrigger();
+	}
 }
 
 void AShooterCharacter::PressAim()
 {
+	isSprinting = false;
 	isZooming = true;
+	GetCharacterMovement()->MaxWalkSpeed = BaseSpeed * SpeedAimFactor;
 }
 
 void AShooterCharacter::ReleaseAim()
 {
 	isZooming = false;
+	GetCharacterMovement()->MaxWalkSpeed = BaseSpeed;
 }
 
 void AShooterCharacter::CheckCameraZoom(float DeltaTime)
@@ -100,4 +111,19 @@ void AShooterCharacter::CheckCameraZoom(float DeltaTime)
 		float NewFOV = FMath::FInterpTo(CameraBoom->TargetArmLength, TargetFOV, DeltaTime, ZoomInterpSpeed);
 		CameraBoom->TargetArmLength = NewFOV;
 	}
+}
+
+void AShooterCharacter::PressSprint()
+{
+	if (!isZooming)
+	{
+		isSprinting = true;
+		GetCharacterMovement()->MaxWalkSpeed = BaseSpeed * SpeedSprintFactor;
+	}
+}
+
+void AShooterCharacter::ReleaseSprint()
+{
+	isSprinting = false;
+	GetCharacterMovement()->MaxWalkSpeed = BaseSpeed;
 }
