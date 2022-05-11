@@ -34,12 +34,17 @@ void APickupableObject::Tick(float DeltaTime)
 	AddActorLocalRotation(RotationRate * DeltaTime);
 }
 
+void APickupableObject::OnInteract()
+{
+	FString pickup = FString::Printf(TEXT("Picked up: %s"), *Name);
+	GEngine->AddOnScreenDebugMessage(1, 5, FColor::Red, pickup);
+}
+
 void APickupableObject::OnOverlapBegin(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	if (OtherActor != nullptr && OtherActor != this && OtherComp != nullptr)
 	{
-		FString pickup = FString::Printf(TEXT("Picked up: %s"), *GetName());
-		GEngine->AddOnScreenDebugMessage(1, 5, FColor::Red, pickup);
+		OnInteract();
 
 		Destroy();
 	}
