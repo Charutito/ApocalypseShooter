@@ -1,5 +1,6 @@
 #include "ShooterCharacter.h"
 #include "Gun.h"
+#include "PickupableObject.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -126,4 +127,22 @@ void AShooterCharacter::ReleaseSprint()
 {
 	isSprinting = false;
 	GetCharacterMovement()->MaxWalkSpeed = BaseSpeed;
+}
+
+void AShooterCharacter::AddToInventorySlot(APickupableObject* pickupableObject)
+{
+	InventorySlots.Add(pickupableObject);
+}
+
+void AShooterCharacter::PrintInventory()
+{
+	FString inventory = "";
+
+	for (APickupableObject* object : InventorySlots)
+	{
+		inventory.Append(object->Name);
+		inventory.Append("  |  ");
+
+		GEngine->AddOnScreenDebugMessage(1, 3, FColor::Green, *inventory);
+	}
 }

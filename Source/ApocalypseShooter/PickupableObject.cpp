@@ -1,4 +1,5 @@
 #include "Components/BoxComponent.h"
+#include "ShooterCharacter.h"
 #include "PickupableObject.h"
 
 APickupableObject::APickupableObject()
@@ -34,18 +35,36 @@ void APickupableObject::Tick(float DeltaTime)
 	AddActorLocalRotation(RotationRate * DeltaTime);
 }
 
-void APickupableObject::OnInteract()
+void APickupableObject::OnInteract(AActor* ActorToInteract)
 {
-	FString pickup = FString::Printf(TEXT("Picked up: %s"), *Name);
-	GEngine->AddOnScreenDebugMessage(1, 5, FColor::Red, pickup);
+	AShooterCharacter* Character = Cast<AShooterCharacter>(ActorToInteract);
+
+	if (Character != nullptr)
+	{
+		FString pickup = FString::Printf(TEXT("Picked up: %s"), *Name);
+		GEngine->AddOnScreenDebugMessage(1, 5, FColor::Red, pickup);
+
+		Show(false);
+		Character->AddToInventorySlot(this);
+	}
 }
 
 void APickupableObject::OnOverlapBegin(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	if (OtherActor != nullptr && OtherActor != this && OtherComp != nullptr)
 	{
-		OnInteract();
-
-		Destroy();
+		OnInteract(OtherActor);
 	}
+}
+
+void APickupableObject::Show(bool isVisible)
+{
+	ECollisionEnabled::Type collision = isVisible ? ECollisionEnabled::QueryAndPhysics : ECollisionEnabled::NoCollision;
+	
+	SetActorTickEnabled(isVisible);
+	
+	ItemMesh->SetVisibility(isVisible);
+	ItemMesh->SetCollisionEnabled(collision);
+
+	BoxCollider->SetCollisionEnabled(collision);
 }

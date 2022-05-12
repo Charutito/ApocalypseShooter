@@ -14,6 +14,7 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
+	virtual void Show(bool isVisible);
 
 public:	
 	virtual void Tick(float DeltaTime) override;
@@ -33,7 +34,7 @@ public:
 	UPROPERTY(EditAnywhere)
 	FString Name;
 
-	virtual void OnInteract();
+	virtual void OnInteract(AActor* ActorToInteract);
 
 	UFUNCTION()
 	void OnOverlapBegin(class UPrimitiveComponent* OverlappedComp, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);

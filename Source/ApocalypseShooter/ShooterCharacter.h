@@ -38,6 +38,11 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Character Movement", Meta = (BlueprintProtected = "true"))
 	float BaseSpeed;
 
+	void AddToInventorySlot(class APickupableObject* pickupableObject);
+
+	UFUNCTION(BlueprintCallable)
+	void PrintInventory();
+
 private:
 	void MoveForward(float AxisValue);
 	void MoveRight(float AxisValue);
@@ -70,4 +75,6 @@ private:
 
 	UPROPERTY()
 	AGun* Gun;
+
+	TArray<class APickupableObject*> InventorySlots;
 };
