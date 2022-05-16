@@ -1,10 +1,9 @@
+#include "PickupableObject.h"
 #include "Components/BoxComponent.h"
 #include "ShooterCharacter.h"
-#include "PickupableObject.h"
 
 APickupableObject::APickupableObject()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	this->SceneComponent = CreateDefaultSubobject<USceneComponent>(TEXT("SceneComponent"));
@@ -19,8 +18,7 @@ APickupableObject::APickupableObject()
 	BoxCollider->SetGenerateOverlapEvents(true);
 	BoxCollider->SetWorldScale3D(FVector(1.0f, 1.0f, 1.0f));
 	BoxCollider->OnComponentBeginOverlap.AddDynamic(this, &APickupableObject::OnOverlapBegin);
-	BoxCollider->AttachToComponent(RootComponent, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
-
+	BoxCollider->SetupAttachment(RootComponent);
 }
 
 void APickupableObject::BeginPlay()
