@@ -39,15 +39,14 @@ void AGun::PullTrigger()
 {
 	if (!HasAmmo())
 	{
-		//Triggerear sonido de gatillo
-		FString ammoOut = FString::Printf(TEXT("Out of ammo"));
-		GEngine->AddOnScreenDebugMessage(1, 5, FColor::Red, ammoOut);
-
+		UGameplayStatics::SpawnSoundAttached(GunTriggerFailSound, Mesh, TEXT("ShotgunFlashSocket"));
 		return;
 	}
 
 	UGameplayStatics::SpawnEmitterAttached(ShotgunFlash, Mesh, TEXT("ShotgunFlashSocket"));
 	UGameplayStatics::SpawnSoundAttached(ShotgunSound, Mesh, TEXT("ShotgunFlashSocket"));
+
+	CurrentBulletsQTy--;
 
 	FHitResult Hit;
 	FVector ShotDirection;
@@ -58,10 +57,6 @@ void AGun::PullTrigger()
 		{
 			FPointDamageEvent DamageEvent(Damage, Hit, ShotDirection, nullptr);
 			HitActor->TakeDamage(Damage, DamageEvent, GetOwnerController(), this);
-			
-			CurrentBulletsQTy--;
-			FString ammoQty = FString::Printf(TEXT("Qty of ammo: %f"), CurrentBulletsQTy);
-			GEngine->AddOnScreenDebugMessage(1, 5, FColor::Blue, ammoQty);
 
 			APawn* Pawn = Cast<APawn>(HitActor);
 
