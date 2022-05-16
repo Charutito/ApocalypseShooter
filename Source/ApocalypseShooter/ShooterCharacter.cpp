@@ -132,17 +132,25 @@ void AShooterCharacter::ReleaseSprint()
 void AShooterCharacter::AddToInventorySlot(APickupableObject* pickupableObject)
 {
 	InventorySlots.Add(pickupableObject);
+	UpdateInventory();
 }
 
-void AShooterCharacter::PrintInventory()
+void AShooterCharacter::UpdateInventory()
 {
-	FString inventory = "";
+	OnUpdateInventory.Broadcast(InventorySlots);
+}
 
-	for (APickupableObject* object : InventorySlots)
-	{
-		inventory.Append(object->Name);
-		inventory.Append("  |  ");
+void AShooterCharacter::ReloadGun(float bulletQty)
+{
+	Gun->LoadBullets(bulletQty);
+}
 
-		GEngine->AddOnScreenDebugMessage(1, 3, FColor::Green, *inventory);
-	}
+float AShooterCharacter::GetGunCurrentAmmo()
+{
+	return Gun->GetCurrentAmmo();
+}
+
+float AShooterCharacter::GetGunMaxAmmo()
+{
+	return Gun->GetMaxAmmo();
 }

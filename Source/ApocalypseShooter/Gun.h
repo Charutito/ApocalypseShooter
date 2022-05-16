@@ -18,6 +18,11 @@ protected:
 
 public:	
 	virtual void Tick(float DeltaTime) override;
+	bool HasAmmo();
+	void LoadBullets(float bulletQty);
+	float GetCurrentAmmo();
+	float GetMaxAmmo();
+
 
 private:
 	UPROPERTY(VisibleAnywhere)
@@ -49,6 +54,11 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	float Damage = 10;
+
+	UPROPERTY(EditAnywhere)
+	float MaxBulletsQty = 50;
+
+	float CurrentBulletsQTy;
 
 	bool GunTrace(FHitResult& Hit, FVector& ShotDirection);
 	AController* GetOwnerController() const;

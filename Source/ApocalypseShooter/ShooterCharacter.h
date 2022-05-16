@@ -5,6 +5,8 @@
 #include "GameFramework/Character.h"
 #include "ShooterCharacter.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FUpdateInventoryDelegate, const TArray<APickupableObject*>&, InventorySlots);
+
 class AGun;
 
 UCLASS()
@@ -41,7 +43,19 @@ public:
 	void AddToInventorySlot(class APickupableObject* pickupableObject);
 
 	UFUNCTION(BlueprintCallable)
-	void PrintInventory();
+	void UpdateInventory();
+
+	UPROPERTY(BlueprintAssignable, Category = "PickUp")
+	FUpdateInventoryDelegate OnUpdateInventory;
+
+	void ReloadGun(float bulletQty);
+
+	UFUNCTION(BlueprintCallable)
+	float GetGunCurrentAmmo();
+
+	UFUNCTION(BlueprintCallable)
+	float GetGunMaxAmmo();
+
 
 private:
 	void MoveForward(float AxisValue);

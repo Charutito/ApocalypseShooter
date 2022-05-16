@@ -14,6 +14,8 @@ AGun::AGun()
 
 	Mesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Mesh"));
 	Mesh->SetupAttachment(Root);
+
+	CurrentBulletsQTy = MaxBulletsQty;
 }
 
 void AGun::BeginPlay()
@@ -28,8 +30,22 @@ void AGun::Tick(float DeltaTime)
 
 }
 
+bool AGun::HasAmmo()
+{
+	return CurrentBulletsQTy > 0;
+}
+
 void AGun::PullTrigger()
 {
+	if (!HasAmmo())
+	{
+		//Triggerear sonido de gatillo
+		FString ammoOut = FString::Printf(TEXT("Out of ammo"));
+		GEngine->AddOnScreenDebugMessage(1, 5, FColor::Red, ammoOut);
+
+		return;
+	}
+
 	UGameplayStatics::SpawnEmitterAttached(ShotgunFlash, Mesh, TEXT("ShotgunFlashSocket"));
 	UGameplayStatics::SpawnSoundAttached(ShotgunSound, Mesh, TEXT("ShotgunFlashSocket"));
 
@@ -42,6 +58,10 @@ void AGun::PullTrigger()
 		{
 			FPointDamageEvent DamageEvent(Damage, Hit, ShotDirection, nullptr);
 			HitActor->TakeDamage(Damage, DamageEvent, GetOwnerController(), this);
+			
+			CurrentBulletsQTy--;
+			FString ammoQty = FString::Printf(TEXT("Qty of ammo: %f"), CurrentBulletsQTy);
+			GEngine->AddOnScreenDebugMessage(1, 5, FColor::Blue, ammoQty);
 
 			APawn* Pawn = Cast<APawn>(HitActor);
 
@@ -89,4 +109,23 @@ AController* AGun::GetOwnerController() const
 	if (OwnerController == nullptr) return nullptr;
 	
 	return OwnerController;
+}
+
+void AGun::LoadBullets(float bulletQty)
+{
+	CurrentBulletsQTy += bulletQty;
+	CurrentBulletsQTy = FMath::Clamp(CurrentBulletsQTy, 0.0f, MaxBulletsQty);
+
+	FString ammoQty = FString::Printf(TEXT("Qty of ammo: %f"), CurrentBulletsQTy);
+	GEngine->AddOnScreenDebugMessage(1, 5, FColor::Green, ammoQty);
+}
+
+float AGun::GetCurrentAmmo()
+{
+	return CurrentBulletsQTy;
+}
+
+float AGun::GetMaxAmmo()
+{
+	return MaxBulletsQty;
 }
