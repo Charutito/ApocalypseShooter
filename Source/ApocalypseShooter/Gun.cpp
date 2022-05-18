@@ -124,3 +124,9 @@ float AGun::GetMaxAmmo()
 {
 	return MaxBulletsQty;
 }
+
+void AGun::Show(bool isVisible)
+{
+	SetActorTickEnabled(isVisible);
+	Mesh->SetVisibility(isVisible);
+}

@@ -26,6 +26,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pickup")
 	UTexture2D* Image;
 
+	void Show(bool isVisible);
+
 
 private:
 	UPROPERTY(VisibleAnywhere)

@@ -51,6 +51,9 @@ void AShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	PlayerInputComponent->BindAction(TEXT("Aim"), EInputEvent::IE_Released, this, &AShooterCharacter::ReleaseAim);
 	PlayerInputComponent->BindAction(TEXT("Sprint"), EInputEvent::IE_Pressed, this, &AShooterCharacter::PressSprint);
 	PlayerInputComponent->BindAction(TEXT("Sprint"), EInputEvent::IE_Released, this, &AShooterCharacter::ReleaseSprint);
+	PlayerInputComponent->BindAction(TEXT("Inventory_Slot_1"), EInputEvent::IE_Pressed, this, &AShooterCharacter::GetFirstGun);
+	PlayerInputComponent->BindAction(TEXT("Inventory_Slot_2"), EInputEvent::IE_Pressed, this, &AShooterCharacter::GetSecondGun);
+	PlayerInputComponent->BindAction(TEXT("Inventory_Slot_3"), EInputEvent::IE_Pressed, this, &AShooterCharacter::GetThirdGun);
 }
 
 float AShooterCharacter::GetHealthPercent() const
@@ -125,6 +128,29 @@ void AShooterCharacter::ReleaseSprint()
 	GetCharacterMovement()->MaxWalkSpeed = BaseSpeed;
 }
 
+void AShooterCharacter::GetFirstGun()
+{
+	GetInventoryItemByIndex(0);
+}
+
+void AShooterCharacter::GetSecondGun()
+{
+	GetInventoryItemByIndex(1);
+}
+
+void AShooterCharacter::GetThirdGun()
+{
+	GetInventoryItemByIndex(2);
+}
+
+void AShooterCharacter::GetInventoryItemByIndex(int index)
+{
+	if (InventorySlots[index] != nullptr)
+	{
+		SetCurrentGun(InventorySlots[index]);
+	}
+}
+
 void AShooterCharacter::AddToInventory(APickupableObject* pickupableObject)
 {
 	APickupableWeapon* Weapon = Cast<APickupableWeapon>(pickupableObject);
@@ -185,7 +211,14 @@ bool AShooterCharacter::IsUnarmed() const
 
 void AShooterCharacter::SetCurrentGun(AGun* CurrentGun)
 {
+	if (Gun != nullptr)
+	{
+		Gun->Show(false);
+		Gun = nullptr;
+	}
+
 	Gun = CurrentGun;
+	Gun->Show(true);
 	Gun->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("WeaponSocket"));
 	Gun->SetOwner(this);
 }

@@ -72,6 +72,10 @@ private:
 	void PressSprint();
 	void ReleaseSprint();
 	void SetCurrentGun(AGun* CurrentGun);
+	void GetFirstGun();
+	void GetSecondGun();
+	void GetThirdGun();
+	void GetInventoryItemByIndex(int index);
 
 	UPROPERTY(EditDefaultsOnly, Category = "Camera")
 	float DefaultFOV = 300;
