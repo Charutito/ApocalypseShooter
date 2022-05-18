@@ -1,6 +1,7 @@
 #include "ShooterCharacter.h"
 #include "Gun.h"
 #include "PickupableObject.h"
+#include "PickupableWeapon.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -21,11 +22,6 @@ AShooterCharacter::AShooterCharacter()
 void AShooterCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-
-	Gun = GetWorld()->SpawnActor<AGun>(GunClass);
-	Gun->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("WeaponSocket"));
-	Gun->SetOwner(this);
-
 	GetCharacterMovement()->MaxWalkSpeed = BaseSpeed;
 }
 
@@ -84,7 +80,7 @@ void AShooterCharacter::LookRightRate(float AxisValue)
 
 void AShooterCharacter::PerformShoot()
 {
-	if (!isSprinting)
+	if (Gun != nullptr && !isSprinting)
 	{
 		Gun->PullTrigger();
 	}
@@ -129,9 +125,23 @@ void AShooterCharacter::ReleaseSprint()
 	GetCharacterMovement()->MaxWalkSpeed = BaseSpeed;
 }
 
-void AShooterCharacter::AddToInventorySlot(APickupableObject* pickupableObject)
+void AShooterCharacter::AddToInventory(APickupableObject* pickupableObject)
 {
-	InventorySlots.Add(pickupableObject);
+	APickupableWeapon* Weapon = Cast<APickupableWeapon>(pickupableObject);
+
+	if (Weapon != nullptr)
+	{
+		FString pickup = FString::Printf(TEXT("Picked up not NULL: %s"), *Weapon->Name);
+		GEngine->AddOnScreenDebugMessage(1, 5, FColor::Red, pickup);
+		AGun* PickUpGun = GetWorld()->SpawnActor<AGun>(Weapon->GunClass);
+		InventorySlots.Add(PickUpGun);
+
+		if (IsUnarmed())
+		{
+			SetCurrentGun(PickUpGun);
+		}
+	}
+
 	UpdateInventory();
 }
 
@@ -142,15 +152,40 @@ void AShooterCharacter::UpdateInventory()
 
 void AShooterCharacter::ReloadGun(float bulletQty)
 {
-	Gun->LoadBullets(bulletQty);
+	if (Gun != nullptr)
+	{
+		Gun->LoadBullets(bulletQty);
+	}
 }
 
 float AShooterCharacter::GetGunCurrentAmmo()
 {
+	if (IsUnarmed())
+	{
+		return 0;
+	}
+
 	return Gun->GetCurrentAmmo();
 }
 
 float AShooterCharacter::GetGunMaxAmmo()
 {
+	if (IsUnarmed())
+	{
+		return 0;
+	}
+
 	return Gun->GetMaxAmmo();
+}
+
+bool AShooterCharacter::IsUnarmed() const
+{
+	return Gun == nullptr;
+}
+
+void AShooterCharacter::SetCurrentGun(AGun* CurrentGun)
+{
+	Gun = CurrentGun;
+	Gun->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("WeaponSocket"));
+	Gun->SetOwner(this);
 }

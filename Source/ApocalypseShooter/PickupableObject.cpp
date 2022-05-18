@@ -43,7 +43,7 @@ void APickupableObject::OnInteract(AActor* ActorToInteract)
 		GEngine->AddOnScreenDebugMessage(1, 5, FColor::Red, pickup);
 
 		Show(false);
-		Character->AddToInventorySlot(this);
+		Character->AddToInventory(this);
 	}
 }
 

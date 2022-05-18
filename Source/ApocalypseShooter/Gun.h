@@ -23,6 +23,9 @@ public:
 	float GetCurrentAmmo();
 	float GetMaxAmmo();
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pickup")
+	UTexture2D* Image;
+
 
 private:
 	UPROPERTY(VisibleAnywhere)

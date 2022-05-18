@@ -5,7 +5,7 @@
 #include "GameFramework/Character.h"
 #include "ShooterCharacter.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FUpdateInventoryDelegate, const TArray<APickupableObject*>&, InventorySlots);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FUpdateInventoryDelegate, const TArray<AGun*>&, InventorySlots);
 
 class AGun;
 
@@ -40,7 +40,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Character Movement", Meta = (BlueprintProtected = "true"))
 	float BaseSpeed;
 
-	void AddToInventorySlot(class APickupableObject* pickupableObject);
+	void AddToInventory(class APickupableObject* pickupableObject);
 
 	UFUNCTION(BlueprintCallable)
 	void UpdateInventory();
@@ -56,6 +56,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	float GetGunMaxAmmo();
 
+	UFUNCTION(BlueprintPure)
+	bool IsUnarmed() const;
+
 
 private:
 	void MoveForward(float AxisValue);
@@ -68,6 +71,7 @@ private:
 	void CheckCameraZoom(float DeltaTime);
 	void PressSprint();
 	void ReleaseSprint();
+	void SetCurrentGun(AGun* CurrentGun);
 
 	UPROPERTY(EditDefaultsOnly, Category = "Camera")
 	float DefaultFOV = 300;
@@ -90,5 +94,5 @@ private:
 	UPROPERTY()
 	AGun* Gun;
 
-	TArray<class APickupableObject*> InventorySlots;
+	TArray<class AGun*> InventorySlots;
 };

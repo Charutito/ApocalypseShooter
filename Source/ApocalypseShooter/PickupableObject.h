@@ -34,9 +34,6 @@ public:
 	UPROPERTY(EditAnywhere)
 	FString Name;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pickup")
-	UTexture2D* Image;
-
 	virtual void OnInteract(AActor* ActorToInteract);
 
 	UFUNCTION()
