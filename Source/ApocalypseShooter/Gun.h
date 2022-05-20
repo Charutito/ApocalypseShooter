@@ -29,6 +29,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pickup")
 	bool IsPistol;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Shoot Variables")
+	float ShootInterval;
+
 	void Show(bool isVisible);
 
 
@@ -67,7 +70,7 @@ private:
 	float Damage = 10;
 
 	UPROPERTY(EditAnywhere)
-	float MaxBulletsQty = 50;
+	float MaxBulletsQty;
 
 	float CurrentBulletsQTy;
 

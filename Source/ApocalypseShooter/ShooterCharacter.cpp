@@ -29,6 +29,14 @@ void AShooterCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	CheckCameraZoom(DeltaTime);
+	
+	ElapsedShootTime += DeltaTime;
+	if (ElapsedShootTime >= GetShootInterval())
+	{
+		PerformShoot();
+		ElapsedShootTime = 0.f;
+	}
+	
 }
 
 void AShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -46,7 +54,8 @@ void AShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	PlayerInputComponent->BindAxis(TEXT("LookRight"), this, &APawn::AddControllerYawInput);
 	
 	PlayerInputComponent->BindAction(TEXT("Jump"), EInputEvent::IE_Pressed, this, &ACharacter::Jump);
-	PlayerInputComponent->BindAction(TEXT("Shoot"), EInputEvent::IE_Pressed, this, &AShooterCharacter::PerformShoot);
+	PlayerInputComponent->BindAction(TEXT("Shoot"), EInputEvent::IE_Pressed, this, &AShooterCharacter::StartShootState);
+	PlayerInputComponent->BindAction(TEXT("Shoot"), EInputEvent::IE_Released, this, &AShooterCharacter::EndShootState);
 	PlayerInputComponent->BindAction(TEXT("Aim"), EInputEvent::IE_Pressed, this, &AShooterCharacter::PressAim);
 	PlayerInputComponent->BindAction(TEXT("Aim"), EInputEvent::IE_Released, this, &AShooterCharacter::ReleaseAim);
 	PlayerInputComponent->BindAction(TEXT("Sprint"), EInputEvent::IE_Pressed, this, &AShooterCharacter::PressSprint);
@@ -81,12 +90,43 @@ void AShooterCharacter::LookRightRate(float AxisValue)
 	AddControllerYawInput(AxisValue * RotationRate * GetWorld()->GetDeltaSeconds());
 }
 
+void AShooterCharacter::StartShootState()
+{
+	ElapsedShootTime = 0.f;
+
+	if (Gun != nullptr && Gun->IsPistol)
+	{
+		IsShootPreessedDown = true;
+		PerformShoot();
+		IsShootPreessedDown = false;
+		return;
+	}
+
+	IsShootPreessedDown = true;
+	PerformShoot();
+}
+
+void AShooterCharacter::EndShootState()
+{
+	IsShootPreessedDown = false;
+}
+
 void AShooterCharacter::PerformShoot()
 {
-	if (Gun != nullptr && !isSprinting)
+	if (Gun != nullptr && !isSprinting && IsShootPreessedDown)
 	{
 		Gun->PullTrigger();
 	}
+}
+
+float AShooterCharacter::GetShootInterval()
+{
+	if (Gun != nullptr && !Gun->IsPistol)
+	{
+		return Gun->ShootInterval;
+	}
+
+	return Period;
 }
 
 void AShooterCharacter::PressAim()

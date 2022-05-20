@@ -71,6 +71,8 @@ private:
 	void MoveRight(float AxisValue);
 	void LookUpRate(float AxisValue);
 	void LookRightRate(float AxisValue);
+	void StartShootState();
+	void EndShootState();
 	void PerformShoot();
 	void PressAim();
 	void ReleaseAim();
@@ -82,6 +84,11 @@ private:
 	void GetSecondGun();
 	void GetThirdGun();
 	void GetInventoryItemByIndex(int index);
+
+	bool IsShootPreessedDown;
+	float ElapsedShootTime = 0.f;
+	float Period = 0.5f;
+	float GetShootInterval();
 
 	UPROPERTY(EditDefaultsOnly, Category = "Camera")
 	float DefaultFOV = 300;

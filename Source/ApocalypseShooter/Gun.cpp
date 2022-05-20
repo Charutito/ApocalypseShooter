@@ -14,14 +14,12 @@ AGun::AGun()
 
 	Mesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Mesh"));
 	Mesh->SetupAttachment(Root);
-
-	CurrentBulletsQTy = MaxBulletsQty;
 }
 
 void AGun::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	CurrentBulletsQTy = MaxBulletsQty;
 }
 
 void AGun::Tick(float DeltaTime)
