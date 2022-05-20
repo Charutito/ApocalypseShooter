@@ -84,6 +84,8 @@ private:
 	void GetSecondGun();
 	void GetThirdGun();
 	void GetInventoryItemByIndex(int index);
+	void OnScrollInventoryUp();
+	void OnScrollInventoryDown();
 
 	bool IsShootPreessedDown;
 	float ElapsedShootTime = 0.f;

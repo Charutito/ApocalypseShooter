@@ -63,6 +63,9 @@ void AShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	PlayerInputComponent->BindAction(TEXT("Inventory_Slot_1"), EInputEvent::IE_Pressed, this, &AShooterCharacter::GetFirstGun);
 	PlayerInputComponent->BindAction(TEXT("Inventory_Slot_2"), EInputEvent::IE_Pressed, this, &AShooterCharacter::GetSecondGun);
 	PlayerInputComponent->BindAction(TEXT("Inventory_Slot_3"), EInputEvent::IE_Pressed, this, &AShooterCharacter::GetThirdGun);
+
+	PlayerInputComponent->BindAction(TEXT("ScrollInventoryUp"), EInputEvent::IE_Pressed, this, &AShooterCharacter::OnScrollInventoryUp);
+	PlayerInputComponent->BindAction(TEXT("ScrollInventoryDown"), EInputEvent::IE_Pressed, this, &AShooterCharacter::OnScrollInventoryDown);
 }
 
 float AShooterCharacter::GetHealthPercent() const
@@ -181,6 +184,47 @@ void AShooterCharacter::GetSecondGun()
 void AShooterCharacter::GetThirdGun()
 {
 	GetInventoryItemByIndex(2);
+}
+
+void AShooterCharacter::OnScrollInventoryUp()
+{
+	FString pickup = FString::Printf(TEXT("Up"));
+	GEngine->AddOnScreenDebugMessage(1, 5, FColor::Red, pickup);
+
+	if (Gun == nullptr) return;
+
+	int LastInventoryIndex = InventorySlots.Num() - 1;
+	int NextIndex = CurrentInventorySlotIndex + 1;
+
+	if (NextIndex <= LastInventoryIndex)
+	{
+		GetInventoryItemByIndex(NextIndex);
+	}
+	else
+	{
+		GetInventoryItemByIndex(0);
+	}
+}
+
+void AShooterCharacter::OnScrollInventoryDown()
+{
+	FString pickup = FString::Printf(TEXT("Down"));
+	GEngine->AddOnScreenDebugMessage(1, 5, FColor::Red, pickup);
+
+	if (Gun == nullptr) return;
+
+	int LastInventoryIndex = InventorySlots.Num() - 1;
+	int NextIndex = CurrentInventorySlotIndex - 1;
+
+	if (NextIndex < 0)
+	{
+		GetInventoryItemByIndex(LastInventoryIndex);
+	}
+	else
+	{
+		GetInventoryItemByIndex(NextIndex);
+	}
+	
 }
 
 void AShooterCharacter::GetInventoryItemByIndex(int index)
