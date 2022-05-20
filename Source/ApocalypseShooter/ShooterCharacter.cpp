@@ -145,9 +145,9 @@ void AShooterCharacter::GetThirdGun()
 
 void AShooterCharacter::GetInventoryItemByIndex(int index)
 {
-	if (InventorySlots[index] != nullptr)
+	if (index < InventorySlots.Num() && InventorySlots[index] != nullptr)
 	{
-		SetCurrentGun(InventorySlots[index]);
+		SetCurrentGun(InventorySlots[index], index);
 	}
 }
 
@@ -164,7 +164,7 @@ void AShooterCharacter::AddToInventory(APickupableObject* pickupableObject)
 
 		if (IsUnarmed())
 		{
-			SetCurrentGun(PickUpGun);
+			SetCurrentGun(PickUpGun, 0);
 		}
 	}
 
@@ -209,7 +209,7 @@ bool AShooterCharacter::IsUnarmed() const
 	return Gun == nullptr;
 }
 
-void AShooterCharacter::SetCurrentGun(AGun* CurrentGun)
+void AShooterCharacter::SetCurrentGun(AGun* CurrentGun, int index)
 {
 	if (Gun != nullptr)
 	{
@@ -217,6 +217,7 @@ void AShooterCharacter::SetCurrentGun(AGun* CurrentGun)
 		Gun = nullptr;
 	}
 
+	CurrentInventorySlotIndex = index;
 	Gun = CurrentGun;
 	Gun->Show(true);
 	Gun->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("WeaponSocket"));
@@ -231,4 +232,14 @@ bool AShooterCharacter::HasAPistol()
 	}
 
 	return false;
+}
+
+int AShooterCharacter::GetCurrentWeaponSlotIndex()
+{
+	if (Gun != nullptr)
+	{
+		return CurrentInventorySlotIndex;
+	}
+
+	return 0;
 }

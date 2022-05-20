@@ -62,6 +62,9 @@ public:
 	UFUNCTION(BlueprintPure)
 	bool HasAPistol();
 
+	UFUNCTION(BlueprintPure)
+	int GetCurrentWeaponSlotIndex();
+
 
 private:
 	void MoveForward(float AxisValue);
@@ -74,7 +77,7 @@ private:
 	void CheckCameraZoom(float DeltaTime);
 	void PressSprint();
 	void ReleaseSprint();
-	void SetCurrentGun(AGun* CurrentGun);
+	void SetCurrentGun(AGun* CurrentGun, int index);
 	void GetFirstGun();
 	void GetSecondGun();
 	void GetThirdGun();
@@ -102,4 +105,6 @@ private:
 	AGun* Gun;
 
 	TArray<class AGun*> InventorySlots;
+	
+	int CurrentInventorySlotIndex;
 };
