@@ -59,6 +59,9 @@ public:
 	UFUNCTION(BlueprintPure)
 	bool IsUnarmed() const;
 
+	UFUNCTION(BlueprintPure)
+	bool HasAPistol();
+
 
 private:
 	void MoveForward(float AxisValue);

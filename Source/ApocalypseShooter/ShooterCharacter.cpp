@@ -222,3 +222,13 @@ void AShooterCharacter::SetCurrentGun(AGun* CurrentGun)
 	Gun->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("WeaponSocket"));
 	Gun->SetOwner(this);
 }
+
+bool AShooterCharacter::HasAPistol()
+{
+	if (Gun != nullptr)
+	{
+		return Gun->IsPistol;
+	}
+
+	return false;
+}

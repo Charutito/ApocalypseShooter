@@ -26,6 +26,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pickup")
 	UTexture2D* Image;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pickup")
+	bool IsPistol;
+
 	void Show(bool isVisible);
 
 
