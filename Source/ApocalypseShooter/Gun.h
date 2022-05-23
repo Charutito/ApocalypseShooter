@@ -34,6 +34,8 @@ public:
 
 	void Show(bool isVisible);
 
+	float GetGunCurrentDamage();
+
 
 private:
 	UPROPERTY(VisibleAnywhere)

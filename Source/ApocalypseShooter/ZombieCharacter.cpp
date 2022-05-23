@@ -28,3 +28,17 @@ void AZombieCharacter::Attack()
 		PlayerPawn->TakeDamage(Damage, DamageEvent, GetController(), this);
 	}
 }
+
+float AZombieCharacter::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser)
+{
+	if (!IsDead())
+	{
+		FVector Location = GetActorLocation() + FVector(0.f, 0.f, DamageTextPositionOffset);
+		FRotator Rotation = GetActorRotation();
+		GetWorld()->SpawnActor<AActor>(DamageFloatingText, Location, Rotation);
+	}
+
+	float DamageApplied = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+
+	return DamageApplied;
+}

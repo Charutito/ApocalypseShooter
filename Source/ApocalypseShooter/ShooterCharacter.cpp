@@ -288,6 +288,16 @@ float AShooterCharacter::GetGunMaxAmmo()
 	return Gun->GetMaxAmmo();
 }
 
+float AShooterCharacter::GetGunCurrentDamage()
+{
+	if (IsUnarmed())
+	{
+		return 0;
+	}
+
+	return  Gun->GetGunCurrentDamage();
+}
+
 bool AShooterCharacter::IsUnarmed() const
 {
 	return Gun == nullptr;

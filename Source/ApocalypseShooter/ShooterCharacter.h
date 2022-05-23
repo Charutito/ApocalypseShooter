@@ -56,6 +56,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	float GetGunMaxAmmo();
 
+	UFUNCTION(BlueprintCallable)
+	float GetGunCurrentDamage();
+
 	UFUNCTION(BlueprintPure)
 	bool IsUnarmed() const;
 

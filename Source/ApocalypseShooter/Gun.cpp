@@ -128,3 +128,8 @@ void AGun::Show(bool isVisible)
 	SetActorTickEnabled(isVisible);
 	Mesh->SetVisibility(isVisible);
 }
+
+float AGun::GetGunCurrentDamage()
+{
+	return Damage;
+}
