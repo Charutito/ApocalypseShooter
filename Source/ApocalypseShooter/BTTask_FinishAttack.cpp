@@ -2,6 +2,7 @@
 #include "ZombieCharacter.h"
 #include "ZombieAIController.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 UBTTask_FinishAttack::UBTTask_FinishAttack()
 {
@@ -19,9 +20,9 @@ EBTNodeResult::Type UBTTask_FinishAttack::ExecuteTask(UBehaviorTreeComponent& Ow
     }
 
     AZombieCharacter* Zombie = Cast<AZombieCharacter>(ZombieController->GetPawn());
-
+   
     OwnerComp.GetBlackboardComponent()->SetValueAsBool(TEXT("CanAttack"), false);
-    Zombie->IsAttacking = false;;
+    Zombie->IsAttacking = false;
 
     return EBTNodeResult::Succeeded;
 }

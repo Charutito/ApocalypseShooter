@@ -18,8 +18,10 @@ void AZombieCharacter::Tick(float DeltaTime)
 
 void AZombieCharacter::Attack()
 {
-	IsAttacking = true;
 	APawn* PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
+	
+	if (PlayerPawn == nullptr) return;
+
 	float DistanceToPlayer = FVector::Distance(GetActorLocation(), PlayerPawn->GetActorLocation());
 
 	if (DistanceToPlayer <= AttackRange)
@@ -41,4 +43,14 @@ float AZombieCharacter::TakeDamage(float DamageAmount, struct FDamageEvent const
 	float DamageApplied = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
 
 	return DamageApplied;
+}
+
+void AZombieCharacter::SetIdleState(bool isIdle)
+{
+	IsIdle = isIdle;
+}
+
+void AZombieCharacter::SetChasingState(bool isChasing)
+{
+	IsChasing = isChasing;
 }

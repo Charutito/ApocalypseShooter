@@ -1,6 +1,7 @@
 #include "BTService_PlayerLocationIfSeen.h"
 #include "Kismet/GameplayStatics.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "ZombieCharacter.h"
 #include "AIController.h"
 
 UBTService_PlayerLocationIfSeen::UBTService_PlayerLocationIfSeen()
@@ -20,7 +21,13 @@ void UBTService_PlayerLocationIfSeen::TickNode(UBehaviorTreeComponent& OwnerComp
         return;
     }
 
-    if (Controller->LineOfSightTo(PlayerPawn))
+    AZombieCharacter* Zombie = Cast<AZombieCharacter>(Controller->GetPawn());
+
+    if (Zombie == nullptr || PlayerPawn == nullptr) return;
+
+    float DistanceToPlayer = FVector::Distance(Zombie->GetActorLocation(), PlayerPawn->GetActorLocation());
+
+    if (Controller->LineOfSightTo(PlayerPawn) && DistanceToPlayer <= Zombie->SightRange)
     {
         OwnerComp.GetBlackboardComponent()->SetValueAsVector(GetSelectedBlackboardKey(), PlayerPawn->GetActorLocation());
     }

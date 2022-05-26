@@ -21,7 +21,7 @@ EBTNodeResult::Type UBTTask_Attack::ExecuteTask(UBehaviorTreeComponent& OwnerCom
     AZombieCharacter* Zombie = Cast<AZombieCharacter>(ZombieController->GetPawn());
 
     OwnerComp.GetBlackboardComponent()->SetValueAsBool(TEXT("CanAttack"), true);
-    Zombie->Attack();
+    Zombie->IsAttacking = true;
 
     return EBTNodeResult::Succeeded;
 }
