@@ -16,6 +16,7 @@ public:
 	void Attack();
 	void SetIdleState(bool isIdle);
 	void SetChasingState(bool isChasing);
+	void GetHit(bool isHitted);
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	bool IsAttacking;
@@ -25,6 +26,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	bool IsChasing;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	bool IsReactingToHit;
 
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 	
@@ -46,4 +50,6 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	float DamageTextPositionOffset = 0.f;
+
+	float BaseSpeed;
 };

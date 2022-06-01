@@ -1,5 +1,6 @@
 #include "ZombieCharacter.h"
 #include "Kismet/GameplayStatics.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 AZombieCharacter::AZombieCharacter()
 {
@@ -9,6 +10,7 @@ AZombieCharacter::AZombieCharacter()
 void AZombieCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+	BaseSpeed = GetCharacterMovement()->MaxWalkSpeed;
 }
 
 void AZombieCharacter::Tick(float DeltaTime)
@@ -41,6 +43,7 @@ float AZombieCharacter::TakeDamage(float DamageAmount, struct FDamageEvent const
 	}
 
 	float DamageApplied = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+	GetHit(true);
 
 	return DamageApplied;
 }
@@ -53,4 +56,18 @@ void AZombieCharacter::SetIdleState(bool isIdle)
 void AZombieCharacter::SetChasingState(bool isChasing)
 {
 	IsChasing = isChasing;
+}
+
+void AZombieCharacter::GetHit(bool isHitted)
+{
+	IsReactingToHit = isHitted;
+
+	if (isHitted)
+	{
+		GetCharacterMovement()->MaxWalkSpeed = 0;
+	}
+	else
+	{
+		GetCharacterMovement()->MaxWalkSpeed = BaseSpeed;
+	}
 }
